@@ -1,0 +1,110 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'application'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'com.primogemstudio'
+version = '0.0.1-alpha1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(8)
+}
+
+application {
+    mainClassName = 'MainKt'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = "sources"
+}
+
+task javadocJar(type: Jar) {
+    dependsOn(javadoc)
+    from("build/dokka/javadoc")
+    archiveClassifier = "javadoc"
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = 'kllvm'
+            version = version
+
+            from components.kotlin
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'kllvm (Kotlin low-level VM)'
+                description = 'A stack based VM written by Kotlin, inspired by jvm'
+                url = 'http://github.com/PrimogemStudio/kllvm'
+                licenses {
+                    license {
+                        name = 'GNU GENERAL PUBLIC LICENSE Version 3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'hackermdch'
+                        name = 'hackermdch'
+                    }
+
+
+                    developer {
+                        id = 'Jack253-png'
+                        name = 'Coder 2'
+                        email = 'guoxiuchen20170402@163.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/PrimogemStudio/kllvm.git'
+                    developerConnection = 'scm:git:ssh://github.com/PrimogemStudio/kllvm.git'
+                    url = 'https://github.com/PrimogemStudio/kllvm'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "LocalMaven"
+            url = layout.projectDirectory.dir("../maven")
+        }
+
+        maven {
+            name = "MavenCentral"
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = ossrhUserName
+                password = ossrhPassword
+            }
+            url = snapshotsRepoUrl
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.maven
+}

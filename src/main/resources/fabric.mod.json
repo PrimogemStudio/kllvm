@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "kllvm (Kotlin low-level VM)",
+  "version": "0.0.1-alpha3",
+  "name": "MMD Base (MMD Loader)",
+  "description": "An independent module from Advanced-Framework mod, be used to praise and load MMD models",
+  "authors": [
+    "Jack253-png",
+    "hackermdch"
+  ],
+  "contact": {
+    "repo": "https://github.com/Primogem-Craft-Development/kllvm",
+    "sources": "https://github.com/Primogem-Craft-Development/kllvm",
+    "issues": "https://github.com/Primogem-Craft-Development/kllvm/issues"
+  },
+  "license": "GPLv3",
+  "icon": "assets/kllvm/icon.png",
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": "advancedfmk"
+    }
+  }
+}
